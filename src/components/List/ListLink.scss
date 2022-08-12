@@ -1,0 +1,56 @@
+.link {
+	$self: &;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	transition: background-color 0.15s ease-in-out;
+	margin-bottom: 30px;
+	text-decoration: none;
+	padding: 10px 12px;
+
+	&.active {
+		background: #ffffff;
+		box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.04);
+		border-radius: 4px;
+	}
+
+	&:hover {
+		background: rgba(255, 255, 255, 0.5);
+	}
+
+	&:visited {
+		color: black;
+	}
+
+	.list-span {
+		text-overflow: ellipsis;
+		overflow: hidden;
+		width: 160px;
+		white-space: nowrap;
+		// text-align: center;
+		font-size: 16px;
+	}
+
+	.color_circle {
+		display: inline-block;
+		margin-right: 8px;
+		width: 20px;
+		height: 20px;
+		border-radius: 20px;
+		box-sizing: content-box;
+		min-width: 20px;
+	}
+
+	&:hover #{$self}__remove-icon {
+		opacity: 0.2;
+	}
+
+	#{$self}__remove-icon {
+		opacity: 0;
+		transition: opacity 0.15s ease-in-out;
+
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+}
