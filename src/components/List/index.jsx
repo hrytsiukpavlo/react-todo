@@ -8,7 +8,7 @@ import Badge from "../Badge";
 
 const List = ({ items, isRemovable, onClick, onRemove, onClickItem, activeItem }) => {
 	const removeList = (item) => {
-		if (window.confirm("Вы действительно хотите удалить список?")) {
+		if (window.confirm("Are you sure that you want to delete this list?")) {
 			onRemove(item);
 			axios.delete("http://localhost:3001/lists/" + item.id).then(() => {
 				onRemove(item.id);

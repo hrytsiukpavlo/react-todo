@@ -9,7 +9,7 @@ import axios from "axios";
 const ListLink = ({ to, children, color, isRemovable, onRemoveList, id }) => {
 	const navigate = useNavigate();
 	const removeList = () => {
-		if (window.confirm("Вы действительно хотите удалить список?")) {
+		if (window.confirm("Are you sure that you want to delete this list?")) {
 			axios.delete("http://localhost:3001/lists/" + id).then(() => {
 				onRemoveList(id);
 				navigate("/");

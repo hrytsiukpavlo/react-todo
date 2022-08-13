@@ -21,7 +21,7 @@ const Tasks = ({ lists, list, onEditTitle, onAddTask, onRemoveTask, onEditTask, 
 	}, [lists, id]);
 
 	const editTitle = () => {
-		const newTitle = window.prompt("Название списка", activeList.name);
+		const newTitle = window.prompt("List name", activeList.name);
 		if (newTitle) {
 			onEditTitle(activeList.id, newTitle);
 			axios
@@ -29,7 +29,7 @@ const Tasks = ({ lists, list, onEditTitle, onAddTask, onRemoveTask, onEditTask, 
 					name: newTitle,
 				})
 				.catch(() => {
-					alert("Не удалось обновить название списка");
+					alert("Unable to update list name");
 				});
 		}
 	};
@@ -43,7 +43,7 @@ const Tasks = ({ lists, list, onEditTitle, onAddTask, onRemoveTask, onEditTask, 
 				</h2>
 			</Link>
 			<div className="tasks__items">
-				{!withoutEmpty && activeList?.tasks && !activeList?.tasks.length && <h2>Задачи отсутствуют</h2>}
+				{!withoutEmpty && activeList?.tasks && !activeList?.tasks.length && <h2>No tasks</h2>}
 				{activeList?.tasks && activeList?.tasks.map((task) => <Task key={task.id} list={activeList} onEdit={onEditTask} onRemove={onRemoveTask} onComplete={onCompleteTask} {...task} />)}
 				<AddTaskForm key={id ? id : list.id} id={id ? id : list.id} list={list} onAddTask={onAddTask} />
 			</div>

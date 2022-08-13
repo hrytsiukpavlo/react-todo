@@ -5,7 +5,6 @@ import addSvg from "../../assets/img/add.svg";
 import closeSvg from "../../assets/img/close.svg";
 import "./AddList.scss";
 import Badge from "../Badge";
-// import {ReactComponent as AddSvg } from '../../assets/img/add.svg';
 
 const AddList = ({ colors, onAdd }) => {
 	const [visiblePopup, setVisiblePopup] = useState(false);
@@ -27,7 +26,7 @@ const AddList = ({ colors, onAdd }) => {
 
 	const addList = () => {
 		if (!inputValue) {
-			alert("Введите название списка");
+			alert("Enter list's name");
 			return;
 		}
 		setIsLoading(true);
@@ -43,7 +42,7 @@ const AddList = ({ colors, onAdd }) => {
 				onClose();
 			})
 			.catch(() => {
-				alert("Ошибка при добавлении списка");
+				alert("Error while adding a list");
 			})
 			.finally(() => {
 				setIsLoading(false);
@@ -58,22 +57,21 @@ const AddList = ({ colors, onAdd }) => {
 					{
 						className: "list__add-button",
 						icon: <img src={addSvg} alt="Add icon" />,
-						// icon: <AddSvg />,
-						name: "Добавить список",
+						name: "Add list",
 					},
 				]}
 			/>
 			{visiblePopup && (
 				<div className="add-list__popup">
 					<img onClick={onClose} src={closeSvg} alt="Close icon" className="add-list__popup-close-btn" />
-					<input value={inputValue} onChange={(e) => setInputValue(e.target.value)} className="field" type="text" placeholder="Название списка" />
+					<input value={inputValue} onChange={(e) => setInputValue(e.target.value)} className="field" type="text" placeholder="List name" />
 					<div className="add-list__popup-colors">
 						{colors.map((color) => (
 							<Badge onClick={() => setSelectedColor(color.id)} key={color.id} color={color.name} className={selectedColor === color.id && "active"} />
 						))}
 					</div>
 					<button onClick={addList} className="button">
-						{isLoading ? "Добавление..." : "Добавить"}
+						{isLoading ? "Adding..." : "Add"}
 					</button>
 				</div>
 			)}

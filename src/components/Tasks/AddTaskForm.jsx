@@ -28,7 +28,7 @@ export default function AddTaskForm({ list, onAddTask, id }) {
 			})
 			.catch((e) => {
 				console.log(e);
-				alert("Ошибка при добавлении задачи");
+				alert("Error while adding a task");
 			})
 			.finally(() => {
 				setIsLoading(false);
@@ -40,16 +40,16 @@ export default function AddTaskForm({ list, onAddTask, id }) {
 			{!visibleForm ? (
 				<div onClick={toggleFormVisible} className="tasks__form-new">
 					<img src={addSvg} alt="Add icon" />
-					<span>Новая задача</span>
+					<span>New task</span>
 				</div>
 			) : (
 				<div className="tasks__form-block">
-					<input value={inputValue} className="field" type="text" placeholder="Текст задачи" onChange={(e) => setInputValue(e.target.value)} />
+					<input value={inputValue} className="field" type="text" placeholder="Task text" onChange={(e) => setInputValue(e.target.value)} />
 					<button disabled={isLoading} onClick={addTask} className="button">
-						{isLoading ? "Добавление..." : "Добавить задачу"}
+						{isLoading ? "Adding..." : "Add task"}
 					</button>
 					<button onClick={toggleFormVisible} className="button button--grey">
-						Отмена
+						Cancel
 					</button>
 				</div>
 			)}

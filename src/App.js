@@ -8,8 +8,6 @@ import ListLink from "./components/List/ListLink";
 function App() {
 	const [lists, setLists] = useState([]);
 	const [colors, setColors] = useState(null);
-	const [activeItem, setActiveItem] = useState(null);
-	let navigate = useNavigate();
 
 	useEffect(() => {
 		axios.get("http://localhost:3001/lists?_expand=color&_embed=tasks").then(({ data }) => {
@@ -36,7 +34,7 @@ function App() {
 	};
 
 	const onRemoveTask = (listId, taskId) => {
-		if (window.confirm("Вы действительно хотите удалить задачу?")) {
+		if (window.confirm("Are you sure that you want to delete this task?")) {
 			const newList = lists.map((item) => {
 				if (item.id === listId) {
 					item.tasks = item.tasks.filter((task) => task.id !== taskId);
@@ -45,13 +43,13 @@ function App() {
 			});
 			setLists(newList);
 			axios.delete("http://localhost:3001/tasks/" + taskId).catch(() => {
-				alert("Не удалось удалить задачу");
+				alert("Unable to delete task");
 			});
 		}
 	};
 
 	const onEditTask = (listId, taskObj) => {
-		const newTaskText = window.prompt("Текст задачи", taskObj.text);
+		const newTaskText = window.prompt("Task text", taskObj.text);
 
 		if (!newTaskText) {
 			return;
@@ -74,7 +72,7 @@ function App() {
 				text: newTaskText,
 			})
 			.catch(() => {
-				alert("Не удалось обновить задачу");
+				alert("Unable to update task");
 			});
 	};
 
@@ -96,7 +94,7 @@ function App() {
 				completed,
 			})
 			.catch(() => {
-				alert("Не удалось обновить задачу");
+				alert("Unable to delete task");
 			});
 	};
 
@@ -116,7 +114,7 @@ function App() {
 					<ListLink>
 						<div className="list-main">
 							<img src={listSvg} alt="List icon" />
-							<span>Все задачи</span>
+							<span>All tasks</span>
 						</div>
 					</ListLink>
 					{lists
@@ -138,7 +136,7 @@ function App() {
 									</ListLink>
 								);
 						  })
-						: "Загрузка..."}
+						: "Loading..."}
 					<AddList onAdd={onAddList} colors={colors} />
 				</div>
 				<div className="todo__tasks">

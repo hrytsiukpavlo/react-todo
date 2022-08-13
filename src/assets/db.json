@@ -2,12 +2,12 @@
   "lists": [
     {
       "id": 2,
-      "name": "Фронтенд",
+      "name": "Frontend",
       "colorId": 4
     },
     {
       "id": 5,
-      "name": "Личное",
+      "name": "Personal",
       "colorId": 1
     },
     {
@@ -25,13 +25,13 @@
     {
       "id": 1,
       "listId": 2,
-      "text": "Изучить JavaScript",
+      "text": "Learn JavaScript",
       "completed": true
     },
     {
       "id": 2,
       "listId": 2,
-      "text": "Изучить паттерны проектирования",
+      "text": "Learn patterns",
       "completed": false
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "listId": 2,
-      "text": "Завершить пет-проект",
+      "text": "Finish pet-projects",
       "completed": false,
       "id": 7
     }
