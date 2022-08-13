@@ -119,20 +119,6 @@ function App() {
 							<span>Все задачи</span>
 						</div>
 					</ListLink>
-					{/*<List*/}
-					{/*	onClickItem={(item) => {*/}
-					{/*		setActiveItem(item);*/}
-					{/*		navigate(`/`, { replace: true });*/}
-					{/*	}}*/}
-					{/*	activeItem={activeItem}*/}
-					{/*	items={[*/}
-					{/*		{*/}
-					{/*			active: !activeItem,*/}
-					{/*			icon: <img src={listSvg} alt="List icon" />,*/}
-					{/*			name: "Все задачи",*/}
-					{/*		},*/}
-					{/*	]}*/}
-					{/*/>*/}
 					{lists
 						? lists.map((list, index) => {
 								return (
@@ -152,18 +138,7 @@ function App() {
 									</ListLink>
 								);
 						  })
-						: // <List
-						  //   items={lists}
-						  //   onRemove={(id) => {
-						  //   }}
-						  //   onClickItem={(item) => {
-						  //     setActiveItem(item);
-						  //     // navigate(`/lists/${item.id}`);
-						  //   }}
-						  //   // activeItem={activeItem}
-						  //   isRemovable
-						  // />
-						  "Загрузка..."}
+						: "Загрузка..."}
 					<AddList onAdd={onAddList} colors={colors} />
 				</div>
 				<div className="todo__tasks">
@@ -172,7 +147,6 @@ function App() {
 							exact
 							path="/"
 							element={lists.map((list) => {
-								// console.log(list);
 								return <Tasks key={list.id} list={list} onAddTask={onAddTask} onEditTitle={onEditListTitle} onRemoveTask={onRemoveTask} onEditTask={onEditTask} onCompleteTask={onCompleteTask} withoutEmpty />;
 							})}
 						/>

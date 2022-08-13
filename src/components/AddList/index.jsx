@@ -5,7 +5,6 @@ import addSvg from "../../assets/img/add.svg";
 import closeSvg from "../../assets/img/close.svg";
 import "./AddList.scss";
 import Badge from "../Badge";
-// import {ReactComponent as AddSvg } from '../../assets/img/add.svg';
 
 const AddList = ({ colors, onAdd }) => {
 	const [visiblePopup, setVisiblePopup] = useState(false);
@@ -58,7 +57,6 @@ const AddList = ({ colors, onAdd }) => {
 					{
 						className: "list__add-button",
 						icon: <img src={addSvg} alt="Add icon" />,
-						// icon: <AddSvg />,
 						name: "Добавить список",
 					},
 				]}

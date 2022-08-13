@@ -7,13 +7,18 @@
     },
     {
       "id": 5,
-      "name": "Личное2",
+      "name": "Личное",
       "colorId": 1
     },
     {
-      "name": "12343333",
+      "name": "123",
       "colorId": 6,
       "id": 6
+    },
+    {
+      "name": "3",
+      "colorId": 7,
+      "id": 7
     }
   ],
   "tasks": [
@@ -21,7 +26,7 @@
       "id": 1,
       "listId": 2,
       "text": "Изучить JavaScript",
-      "completed": false
+      "completed": true
     },
     {
       "id": 2,
@@ -38,18 +43,18 @@
     {
       "listId": 6,
       "text": "3333",
-      "completed": false,
+      "completed": true,
       "id": 4
     },
     {
       "listId": 6,
       "text": "123123",
-      "completed": false,
+      "completed": true,
       "id": 5
     },
     {
       "listId": 5,
-      "text": "236374685796879",
+      "text": "Test",
       "completed": false,
       "id": 6
     }
