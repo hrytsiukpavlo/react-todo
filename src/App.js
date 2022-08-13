@@ -12,10 +12,10 @@ function App() {
 	let navigate = useNavigate();
 
 	useEffect(() => {
-		axios.get("https://phrytsiuk-react-todo.herokuapp.com/lists?_expand=color&_embed=tasks").then(({ data }) => {
+		axios.get("http://localhost:3001/lists?_expand=color&_embed=tasks").then(({ data }) => {
 			setLists(data);
 		});
-		axios.get("https://phrytsiuk-react-todo.herokuapp.com/colors").then(({ data }) => {
+		axios.get("http://localhost:3001/colors").then(({ data }) => {
 			setColors(data);
 		});
 	}, []);
@@ -44,7 +44,7 @@ function App() {
 				return item;
 			});
 			setLists(newList);
-			axios.delete("https://phrytsiuk-react-todo.herokuapp.com/tasks/" + taskId).catch(() => {
+			axios.delete("http://localhost:3001/tasks/" + taskId).catch(() => {
 				alert("Не удалось удалить задачу");
 			});
 		}
@@ -70,7 +70,7 @@ function App() {
 		});
 		setLists(newList);
 		axios
-			.patch("https://phrytsiuk-react-todo.herokuapp.com/tasks/" + taskObj.id, {
+			.patch("http://localhost:3001/tasks/" + taskObj.id, {
 				text: newTaskText,
 			})
 			.catch(() => {
@@ -92,7 +92,7 @@ function App() {
 		});
 		setLists(newList);
 		axios
-			.patch("https://phrytsiuk-react-todo.herokuapp.com/tasks/" + taskId, {
+			.patch("http://localhost:3001/tasks/" + taskId, {
 				completed,
 			})
 			.catch(() => {

@@ -10,7 +10,7 @@ const List = ({ items, isRemovable, onClick, onRemove, onClickItem, activeItem }
 	const removeList = (item) => {
 		if (window.confirm("Вы действительно хотите удалить список?")) {
 			onRemove(item);
-			axios.delete("https://phrytsiuk-react-todo.herokuapp.com/lists/" + item.id).then(() => {
+			axios.delete("http://localhost:3001/lists/" + item.id).then(() => {
 				onRemove(item.id);
 			});
 		}

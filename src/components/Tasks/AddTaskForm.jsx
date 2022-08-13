@@ -21,7 +21,7 @@ export default function AddTaskForm({ list, onAddTask, id }) {
 		};
 		setIsLoading(true);
 		axios
-			.post("https://phrytsiuk-react-todo.herokuapp.com/tasks", obj)
+			.post("http://localhost:3001/tasks", obj)
 			.then(({ data }) => {
 				onAddTask(id, data);
 				toggleFormVisible();

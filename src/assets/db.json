@@ -57,6 +57,12 @@
       "text": "Test",
       "completed": false,
       "id": 6
+    },
+    {
+      "listId": 2,
+      "text": "Завершить пет-проект",
+      "completed": false,
+      "id": 7
     }
   ],
   "colors": [
