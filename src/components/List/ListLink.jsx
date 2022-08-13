@@ -10,7 +10,7 @@ const ListLink = ({ to, children, color, isRemovable, onRemoveList, id }) => {
 	const navigate = useNavigate();
 	const removeList = () => {
 		if (window.confirm("Вы действительно хотите удалить список?")) {
-			axios.delete("http://localhost:3001/lists/" + id).then(() => {
+			axios.delete("https://phrytsiuk-react-todo.herokuapp.com/lists/" + id).then(() => {
 				onRemoveList(id);
 				navigate("/");
 			});

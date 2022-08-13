@@ -25,7 +25,7 @@ const Tasks = ({ lists, list, onEditTitle, onAddTask, onRemoveTask, onEditTask, 
 		if (newTitle) {
 			onEditTitle(activeList.id, newTitle);
 			axios
-				.patch("http://localhost:3001/lists/" + activeList.id, {
+				.patch("https://phrytsiuk-react-todo.herokuapp.com/lists/" + activeList.id, {
 					name: newTitle,
 				})
 				.catch(() => {
