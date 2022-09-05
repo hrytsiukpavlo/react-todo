@@ -10,10 +10,10 @@ function App() {
 	const [colors, setColors] = useState(null);
 
 	useEffect(() => {
-		axios.get("https://phrytsiuk-react-todo.herokuapp.com/api?_expand=color&_embed=tasks").then(({ data }) => {
+		axios.get("http://localhost:3001/lists?_expand=color&_embed=tasks").then(({ data }) => {
 			setLists(data);
 		});
-		axios.get("https://phrytsiuk-react-todo.herokuapp.com/api/colors").then(({ data }) => {
+		axios.get("http://localhost:3001/colors").then(({ data }) => {
 			setColors(data);
 		});
 	}, []);
