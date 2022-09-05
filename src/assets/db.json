@@ -32,7 +32,7 @@
       "id": 2,
       "listId": 2,
       "text": "Learn patterns",
-      "completed": false
+      "completed": true
     },
     {
       "listId": 6,
@@ -43,25 +43,25 @@
     {
       "listId": 6,
       "text": "3333",
-      "completed": true,
+      "completed": false,
       "id": 4
     },
     {
       "listId": 6,
       "text": "123123",
-      "completed": true,
+      "completed": false,
       "id": 5
     },
     {
       "listId": 5,
       "text": "Test",
-      "completed": false,
+      "completed": true,
       "id": 6
     },
     {
       "listId": 2,
       "text": "Finish pet-projects",
-      "completed": false,
+      "completed": true,
       "id": 7
     }
   ],
