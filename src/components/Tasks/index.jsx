@@ -9,7 +9,16 @@ import "./Tasks.scss";
 import AddTaskForm from "./AddTaskForm";
 import Task from "./Task";
 
-const Tasks = ({ lists, list, onEditTitle, onAddTask, onRemoveTask, onEditTask, onCompleteTask, withoutEmpty }) => {
+const Tasks = ({
+	lists,
+	list,
+	onEditTitle,
+	onAddTask,
+	onRemoveTask,
+	onEditTask,
+	onCompleteTask,
+	withoutEmpty,
+}) => {
 	let { id } = useParams();
 
 	const [activeList, setActiveList] = useState(list);
@@ -24,8 +33,9 @@ const Tasks = ({ lists, list, onEditTitle, onAddTask, onRemoveTask, onEditTask, 
 		const newTitle = window.prompt("List name", activeList.name);
 		if (newTitle) {
 			onEditTitle(activeList.id, newTitle);
+			console.log(activeList.id);
 			axios
-				.patch("http://localhost:3001/lists/" + activeList.id, {
+				.put("https://6317872182797be77fff8e46.mockapi.io/lists/" + activeList.id, {
 					name: newTitle,
 				})
 				.catch(() => {
@@ -37,15 +47,30 @@ const Tasks = ({ lists, list, onEditTitle, onAddTask, onRemoveTask, onEditTask, 
 	return (
 		<div className="tasks">
 			<Link to={`/lists/${id ? id : list.id}`}>
-				<h2 style={{ color: activeList?.color?.hex }} className="tasks__title">
+				<h2 style={{ color: activeList?.colorId }} className="tasks__title">
 					{activeList?.name}
 					<img onClick={editTitle} src={editSvg} alt="Edit icon" />
 				</h2>
 			</Link>
 			<div className="tasks__items">
 				{!withoutEmpty && activeList?.tasks && !activeList?.tasks.length && <h2>No tasks</h2>}
-				{activeList?.tasks && activeList?.tasks.map((task) => <Task key={task.id} list={activeList} onEdit={onEditTask} onRemove={onRemoveTask} onComplete={onCompleteTask} {...task} />)}
-				<AddTaskForm key={id ? id : list.id} id={id ? id : list.id} list={list} onAddTask={onAddTask} />
+				{activeList?.tasks &&
+					activeList?.tasks.map((task) => (
+						<Task
+							key={task.id}
+							list={activeList}
+							onEdit={onEditTask}
+							onRemove={onRemoveTask}
+							onComplete={onCompleteTask}
+							{...task}
+						/>
+					))}
+				<AddTaskForm
+					key={id ? id : list.id}
+					id={id ? id : list.id}
+					list={list}
+					onAddTask={onAddTask}
+				/>
 			</div>
 		</div>
 	);

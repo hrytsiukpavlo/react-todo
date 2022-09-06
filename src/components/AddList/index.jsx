@@ -8,20 +8,20 @@ import Badge from "../Badge";
 
 const AddList = ({ colors, onAdd }) => {
 	const [visiblePopup, setVisiblePopup] = useState(false);
-	const [selectedColor, setSelectedColor] = useState(3);
+	const [selectedColor, setSelectedColor] = useState(undefined);
 	const [isLoading, setIsLoading] = useState(false);
 	const [inputValue, setInputValue] = useState("");
 
 	useEffect(() => {
 		if (Array.isArray(colors)) {
-			setSelectedColor(colors[0].id);
+			setSelectedColor(colors[0].hex);
 		}
 	}, [colors]);
 
 	const onClose = () => {
 		setVisiblePopup(false);
 		setInputValue("");
-		setSelectedColor(colors[0].id);
+		setSelectedColor(colors[0].hex);
 	};
 
 	const addList = () => {
@@ -30,14 +30,18 @@ const AddList = ({ colors, onAdd }) => {
 			return;
 		}
 		setIsLoading(true);
+		console.log({
+			name: inputValue,
+			colorId: selectedColor,
+		});
 		axios
-			.post("http://localhost:3001/lists", {
+			.post("https://6317872182797be77fff8e46.mockapi.io/lists", {
 				name: inputValue,
 				colorId: selectedColor,
 			})
 			.then(({ data }) => {
-				const color = colors.filter((c) => c.id === selectedColor)[0];
-				const listObj = { ...data, color, tasks: [] };
+				const colorId = colors.filter((c) => c.id === selectedColor)[0].hex;
+				const listObj = { ...data, colorId, tasks: [] };
 				onAdd(listObj);
 				onClose();
 			})
@@ -63,11 +67,27 @@ const AddList = ({ colors, onAdd }) => {
 			/>
 			{visiblePopup && (
 				<div className="add-list__popup">
-					<img onClick={onClose} src={closeSvg} alt="Close icon" className="add-list__popup-close-btn" />
-					<input value={inputValue} onChange={(e) => setInputValue(e.target.value)} className="field" type="text" placeholder="List name" />
+					<img
+						onClick={onClose}
+						src={closeSvg}
+						alt="Close icon"
+						className="add-list__popup-close-btn"
+					/>
+					<input
+						value={inputValue}
+						onChange={(e) => setInputValue(e.target.value)}
+						className="field"
+						type="text"
+						placeholder="List name"
+					/>
 					<div className="add-list__popup-colors">
 						{colors.map((color) => (
-							<Badge onClick={() => setSelectedColor(color.id)} key={color.id} color={color.name} className={selectedColor === color.id && "active"} />
+							<Badge
+								onClick={() => setSelectedColor(color.id)}
+								key={color.hex}
+								color={color.name}
+								className={selectedColor === color.id && "active"}
+							/>
 						))}
 					</div>
 					<button onClick={addList} className="button">

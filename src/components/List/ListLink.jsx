@@ -8,9 +8,10 @@ import axios from "axios";
 
 const ListLink = ({ to, children, color, isRemovable, onRemoveList, id }) => {
 	const navigate = useNavigate();
+
 	const removeList = () => {
 		if (window.confirm("Are you sure that you want to delete this list?")) {
-			axios.delete("http://localhost:3001/lists/" + id).then(() => {
+			axios.delete("https://6317872182797be77fff8e46.mockapi.io/lists/" + id).then(() => {
 				onRemoveList(id);
 				navigate("/");
 			});
@@ -18,7 +19,11 @@ const ListLink = ({ to, children, color, isRemovable, onRemoveList, id }) => {
 	};
 	return (
 		<div>
-			<NavLink to={to ? to : "/"} className={({ isActive }) => cn("link", isActive && "active")} end>
+			<NavLink
+				to={to ? to : "/"}
+				className={({ isActive }) => cn("link", isActive && "active")}
+				end
+			>
 				{color ? (
 					<span
 						className={"color_circle"}
@@ -28,7 +33,14 @@ const ListLink = ({ to, children, color, isRemovable, onRemoveList, id }) => {
 					/>
 				) : null}
 				<div className="list-span">{children}</div>
-				{isRemovable ? <img className="list__remove-icon link__remove-icon" src={removeSvg} alt="Remove icon" onClick={removeList} /> : null}
+				{isRemovable ? (
+					<img
+						className="list__remove-icon link__remove-icon"
+						src={removeSvg}
+						alt="Remove icon"
+						onClick={removeList}
+					/>
+				) : null}
 			</NavLink>
 		</div>
 	);

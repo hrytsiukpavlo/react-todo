@@ -10,7 +10,7 @@ const List = ({ items, isRemovable, onClick, onRemove, onClickItem, activeItem }
 	const removeList = (item) => {
 		if (window.confirm("Are you sure that you want to delete this list?")) {
 			onRemove(item);
-			axios.delete("http://localhost:3001/lists/" + item.id).then(() => {
+			axios.delete("https://6317872182797be77fff8e46.mockapi.io/lists/" + item.id).then(() => {
 				onRemove(item.id);
 			});
 		}
@@ -31,7 +31,14 @@ const List = ({ items, isRemovable, onClick, onRemove, onClickItem, activeItem }
 						{item.name}
 						{item.tasks && ` (${item.tasks.length})`}
 					</span>
-					{isRemovable && <img className="list__remove-icon" src={removeSvg} alt="Remove icon" onClick={() => removeList(item)} />}
+					{isRemovable && (
+						<img
+							className="list__remove-icon"
+							src={removeSvg}
+							alt="Remove icon"
+							onClick={() => removeList(item)}
+						/>
+					)}
 				</li>
 			))}
 		</ul>

@@ -21,7 +21,7 @@ export default function AddTaskForm({ list, onAddTask, id }) {
 		};
 		setIsLoading(true);
 		axios
-			.post("http://localhost:3001/tasks", obj)
+			.post("https://6317872182797be77fff8e46.mockapi.io/tasks", obj)
 			.then(({ data }) => {
 				onAddTask(id, data);
 				toggleFormVisible();
@@ -44,7 +44,13 @@ export default function AddTaskForm({ list, onAddTask, id }) {
 				</div>
 			) : (
 				<div className="tasks__form-block">
-					<input value={inputValue} className="field" type="text" placeholder="Task text" onChange={(e) => setInputValue(e.target.value)} />
+					<input
+						value={inputValue}
+						className="field"
+						type="text"
+						placeholder="Task text"
+						onChange={(e) => setInputValue(e.target.value)}
+					/>
 					<button disabled={isLoading} onClick={addTask} className="button">
 						{isLoading ? "Adding..." : "Add task"}
 					</button>

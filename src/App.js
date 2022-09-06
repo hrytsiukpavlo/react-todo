@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import listSvg from "./assets/img/list.svg";
-import { List, AddList, Tasks } from "./components";
+import { AddList, Tasks } from "./components";
 import axios from "axios";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import ListLink from "./components/List/ListLink";
 
 function App() {
@@ -10,11 +10,30 @@ function App() {
 	const [colors, setColors] = useState(null);
 
 	useEffect(() => {
-		axios.get("http://localhost:3001/lists?_expand=color&_embed=tasks").then(({ data }) => {
-			setLists(data);
-		});
-		axios.get("http://localhost:3001/colors").then(({ data }) => {
-			setColors(data);
+		const allRequests = Promise.all([
+			axios
+				.get("https://6317872182797be77fff8e46.mockapi.io/lists?_expand=color&_embed=tasks")
+				.then(({ data }) => {
+					return data;
+				}),
+			axios.get("https://6317872182797be77fff8e46.mockapi.io/colors/").then(({ data }) => {
+				return data;
+			}),
+			//get tasks
+		]);
+
+		allRequests.then((data) => {
+			const fetchedLists = data[0];
+			const fetchedColors = data[1];
+			//data[2]
+			const newLists = fetchedLists.map((list) => {
+				const targetColor = list.colorId;
+				// add tasks to the list by list.id === listId (ne poteryat type)
+				return { ...list, colorId: fetchedColors.find((color) => color.id === targetColor)?.hex };
+			});
+			setLists(newLists);
+			setColors(fetchedColors);
+			//get tasks
 		});
 	}, []);
 
@@ -42,7 +61,7 @@ function App() {
 				return item;
 			});
 			setLists(newList);
-			axios.delete("http://localhost:3001/tasks/" + taskId).catch(() => {
+			axios.delete("https://6317872182797be77fff8e46.mockapi.io/tasks/" + taskId).catch(() => {
 				alert("Unable to delete task");
 			});
 		}
@@ -68,7 +87,7 @@ function App() {
 		});
 		setLists(newList);
 		axios
-			.patch("http://localhost:3001/tasks/" + taskObj.id, {
+			.put("https://6317872182797be77fff8e46.mockapi.io/tasks/" + taskObj.id, {
 				text: newTaskText,
 			})
 			.catch(() => {
@@ -90,7 +109,7 @@ function App() {
 		});
 		setLists(newList);
 		axios
-			.patch("http://localhost:3001/tasks/" + taskId, {
+			.put("https://6317872182797be77fff8e46.mockapi.io/tasks/" + taskId, {
 				completed,
 			})
 			.catch(() => {
@@ -119,12 +138,13 @@ function App() {
 					</ListLink>
 					{lists
 						? lists.map((list, index) => {
+								// console.log(list.colorId);
 								return (
 									<ListLink
 										to={`/lists/${list.id}`}
 										id={list.id}
 										key={list.id}
-										color={list.color?.hex}
+										color={list.colorId}
 										isRemovable={true}
 										onRemoveList={() => {
 											const newLists = lists.filter((item) => item.id !== list?.id);
@@ -132,7 +152,7 @@ function App() {
 										}}
 									>
 										{list.name}
-										{` (${list.tasks.length})`}
+										{/* {` (${list.tasks.length})`} */}
 									</ListLink>
 								);
 						  })
@@ -145,10 +165,35 @@ function App() {
 							exact
 							path="/"
 							element={lists.map((list) => {
-								return <Tasks key={list.id} list={list} onAddTask={onAddTask} onEditTitle={onEditListTitle} onRemoveTask={onRemoveTask} onEditTask={onEditTask} onCompleteTask={onCompleteTask} withoutEmpty />;
+								return (
+									<Tasks
+										key={list.id}
+										list={list}
+										onAddTask={onAddTask}
+										onEditTitle={onEditListTitle}
+										onRemoveTask={onRemoveTask}
+										onEditTask={onEditTask}
+										onCompleteTask={onCompleteTask}
+										withoutEmpty
+									/>
+								);
 							})}
 						/>
-						<Route path="/lists/:id" element={lists && <Tasks lists={lists} onAddTask={onAddTask} onEditTitle={onEditListTitle} onRemoveTask={onRemoveTask} onEditTask={onEditTask} onCompleteTask={onCompleteTask} />} />
+						<Route
+							path="/lists/:id"
+							element={
+								lists && (
+									<Tasks
+										lists={lists}
+										onAddTask={onAddTask}
+										onEditTitle={onEditListTitle}
+										onRemoveTask={onRemoveTask}
+										onEditTask={onEditTask}
+										onCompleteTask={onCompleteTask}
+									/>
+								)
+							}
+						/>
 					</Routes>
 				</div>
 			</div>
