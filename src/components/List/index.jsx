@@ -11,7 +11,7 @@ const List = ({ items, isRemovable, onClick, onRemove, onClickItem, activeItem }
 	const removeList = (item) => {
 		if (window.confirm("Are you sure that you want to delete this list?")) {
 			onRemove(item);
-			axios.delete("https://63184367f6b281877c6769bb.mockapi.io/lists/" + item.id).then(() => {
+			axios.delete("https://63188bbdf6b281877c6f7f12.mockapi.io/lists/" + item.id).then(() => {
 				onRemove(item.id);
 			});
 		}

@@ -13,14 +13,14 @@ function App() {
 	useEffect(() => {
 		const allRequests = Promise.all([
 			axios
-				.get("https://63184367f6b281877c6769bb.mockapi.io/lists?_expand=color&_embed=tasks")
+				.get("https://63188bbdf6b281877c6f7f12.mockapi.io/lists?_expand=color&_embed=tasks")
 				.then(({ data }) => {
 					return data;
 				}),
-			axios.get("https://63184367f6b281877c6769bb.mockapi.io/colors/").then(({ data }) => {
+			axios.get("https://63188bbdf6b281877c6f7f12.mockapi.io/colors/").then(({ data }) => {
 				return data;
 			}),
-			axios.get("https://63184367f6b281877c6769bb.mockapi.io/tasks/").then(({ data }) => {
+			axios.get("https://63188bbdf6b281877c6f7f12.mockapi.io//tasks/").then(({ data }) => {
 				return data;
 			}),
 		]);
@@ -32,13 +32,6 @@ function App() {
 			const newLists = fetchedLists.map((list) => {
 				const targetColor = list.colorId;
 				const targetTasks = list.id;
-				// add tasks to the list by list.id === listId (ne poteryat type)
-				// console.log(list);
-				// console.log(
-				// 	fetchedTasks
-				// 		.filter((task) => Number(task.listId) === Number(targetTasks))
-				// 		.map((task) => task.text)
-				// );
 				return {
 					...list,
 					colorId: fetchedColors.find((color) => color.id === targetColor)?.hex,
@@ -47,12 +40,13 @@ function App() {
 						.map((task) => ({
 							text: task.text,
 							taskId: Number(task.id),
+							listId: Number(task.listId),
+							completed: task.completed,
 						})),
 				};
 			});
 			setLists(newLists);
 			setColors(fetchedColors);
-			console.log(newLists);
 		});
 	}, []);
 
@@ -71,18 +65,22 @@ function App() {
 		setLists(newList);
 	};
 
-	const onRemoveTask = (listId, taskId) => {
+	const onRemoveTask = (listId, taskId, neededId) => {
 		if (window.confirm("Are you sure that you want to delete this task?")) {
 			const newList = lists.map((item) => {
-				if (item.id === listId) {
-					item.tasks = item.tasks.filter((task) => task.id !== taskId);
+				if (Number(item.id) === Number(listId)) {
+					item.tasks = item.tasks.filter((task) => {
+						return task.taskId !== taskId;
+					});
 				}
 				return item;
 			});
 			setLists(newList);
-			axios.delete("https://63184367f6b281877c6769bb.mockapi.io/tasks/" + taskId).catch(() => {
-				alert("Unable to delete task");
-			});
+			axios
+				.delete(`https://63188bbdf6b281877c6f7f12.mockapi.io/tasks/${neededId ? neededId : taskId}`)
+				.catch(() => {
+					alert("Unable to delete task");
+				});
 		}
 	};
 
@@ -94,9 +92,9 @@ function App() {
 		}
 
 		const newList = lists.map((list) => {
-			if (list.id === listId) {
+			if (Number(list.id) === Number(listId)) {
 				list.tasks = list.tasks.map((task) => {
-					if (task.id === taskObj.id) {
+					if (Number(task.taskId === Number(taskObj.taskId))) {
 						task.text = newTaskText;
 					}
 					return task;
@@ -106,19 +104,24 @@ function App() {
 		});
 		setLists(newList);
 		axios
-			.put("https://63184367f6b281877c6769bb.mockapi.io/tasks/" + taskObj.id, {
-				text: newTaskText,
-			})
+			.put(
+				`https://63188bbdf6b281877c6f7f12.mockapi.io/tasks/${
+					taskObj.id ? taskObj.id : taskObj.taskId
+				}`,
+				{
+					text: newTaskText,
+				}
+			)
 			.catch(() => {
 				alert("Unable to update task");
 			});
 	};
 
-	const onCompleteTask = (listId, taskId, completed) => {
+	const onCompleteTask = (listId, taskId, completed, id) => {
 		const newList = lists.map((list) => {
-			if (list.id === listId) {
+			if (Number(list.id) === Number(listId)) {
 				list.tasks = list.tasks.map((task) => {
-					if (task.id === taskId) {
+					if (Number(task.taskId === Number(taskId))) {
 						task.completed = completed;
 					}
 					return task;
@@ -126,13 +129,15 @@ function App() {
 			}
 			return list;
 		});
+
 		setLists(newList);
+
 		axios
-			.put("https://63184367f6b281877c6769bb.mockapi.io/tasks/" + taskId, {
+			.put(`https://63188bbdf6b281877c6f7f12.mockapi.io/tasks/${id ? id : taskId}`, {
 				completed,
 			})
 			.catch(() => {
-				alert("Unable to delete task");
+				alert("Unable to complete task");
 			});
 	};
 
@@ -170,7 +175,7 @@ function App() {
 										}}
 									>
 										{list.name}
-										{/* {` (${list.tasks.length})`} */}
+										{` (${list.tasks.length})`}
 									</ListLink>
 								);
 						  })
@@ -184,18 +189,16 @@ function App() {
 							path="/"
 							element={lists.map((list, index) => {
 								return (
-									<>
-										<Tasks
-											key={uuidv4()}
-											list={list}
-											onAddTask={onAddTask}
-											onEditTitle={onEditListTitle}
-											onRemoveTask={onRemoveTask}
-											onEditTask={onEditTask}
-											onCompleteTask={onCompleteTask}
-											withoutEmpty
-										/>
-									</>
+									<Tasks
+										key={uuidv4()}
+										list={list}
+										onAddTask={onAddTask}
+										onEditTitle={onEditListTitle}
+										onRemoveTask={onRemoveTask}
+										onEditTask={onEditTask}
+										onCompleteTask={onCompleteTask}
+										withoutEmpty
+									/>
 								);
 							})}
 						/>
@@ -203,16 +206,14 @@ function App() {
 							path="/lists/:id"
 							element={
 								lists && (
-									<>
-										<Tasks
-											lists={lists}
-											onAddTask={onAddTask}
-											onEditTitle={onEditListTitle}
-											onRemoveTask={onRemoveTask}
-											onEditTask={onEditTask}
-											onCompleteTask={onCompleteTask}
-										/>
-									</>
+									<Tasks
+										lists={lists}
+										onAddTask={onAddTask}
+										onEditTitle={onEditListTitle}
+										onRemoveTask={onRemoveTask}
+										onEditTask={onEditTask}
+										onCompleteTask={onCompleteTask}
+									/>
 								)
 							}
 						/>

@@ -1,22 +1,21 @@
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
 
-const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
+const Task = ({ taskId, listId, text, id, completed, list, onRemove, onEdit, onComplete }) => {
 	const onChangeCheckbox = (e) => {
-		onComplete(list.id, id, e.target.checked);
+		onComplete(listId, taskId, e.target.checked, id);
 	};
-
 	return (
 		<>
-			<div key={uuidv4()} className="tasks__items-row">
+			<div key={taskId} className="tasks__items-row">
 				<div className="checkbox">
 					<input
 						onChange={onChangeCheckbox}
-						id={`task-${id}`}
+						id={`task-${taskId}`}
 						type="checkbox"
 						checked={completed}
 					/>
-					<label htmlFor={`task-${id}`}>
+					<label htmlFor={`task-${taskId}`}>
 						<svg
 							width="11"
 							height="8"
@@ -36,7 +35,7 @@ const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
 				</div>
 				<p>{text}</p>
 				<div className="tasks__items-row-actions">
-					<div onClick={() => onEdit(list.id, { id, text })}>
+					<div onClick={() => onEdit(listId, { taskId, text, id })}>
 						<svg
 							width="15"
 							height="15"
@@ -50,7 +49,11 @@ const Task = ({ id, text, completed, list, onRemove, onEdit, onComplete }) => {
 							/>
 						</svg>
 					</div>
-					<div onClick={() => onRemove(list.id, id)}>
+					<div
+						onClick={() => {
+							onRemove(listId, taskId, id);
+						}}
+					>
 						<svg
 							width="11"
 							height="11"

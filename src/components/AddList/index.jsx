@@ -14,7 +14,7 @@ const AddList = ({ colors, onAdd }) => {
 
 	useEffect(() => {
 		if (Array.isArray(colors)) {
-			setSelectedColor(colors[0].hex);
+			setSelectedColor(colors[0].id);
 		}
 	}, [colors]);
 
@@ -30,12 +30,8 @@ const AddList = ({ colors, onAdd }) => {
 			return;
 		}
 		setIsLoading(true);
-		console.log({
-			name: inputValue,
-			colorId: selectedColor,
-		});
 		axios
-			.post("https://63184367f6b281877c6769bb.mockapi.io/lists", {
+			.post("https://63188bbdf6b281877c6f7f12.mockapi.io/lists", {
 				name: inputValue,
 				colorId: selectedColor,
 			})
@@ -45,7 +41,8 @@ const AddList = ({ colors, onAdd }) => {
 				onAdd(listObj);
 				onClose();
 			})
-			.catch(() => {
+			.catch((err) => {
+				console.log(err);
 				alert("Error while adding a list");
 			})
 			.finally(() => {
@@ -80,6 +77,7 @@ const AddList = ({ colors, onAdd }) => {
 						type="text"
 						placeholder="List name"
 					/>
+
 					<div className="add-list__popup-colors">
 						{colors.map((color) => (
 							<Badge

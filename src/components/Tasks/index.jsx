@@ -34,9 +34,8 @@ const Tasks = ({
 		const newTitle = window.prompt("List name", activeList.name);
 		if (newTitle) {
 			onEditTitle(activeList.id, newTitle);
-			console.log(activeList.id);
 			axios
-				.put("https://63184367f6b281877c6769bb.mockapi.io/lists/" + activeList.id, {
+				.put("https://63188bbdf6b281877c6f7f12.mockapi.io/lists/" + activeList.id, {
 					name: newTitle,
 				})
 				.catch(() => {
@@ -57,16 +56,14 @@ const Tasks = ({
 				{!withoutEmpty && activeList?.tasks && !activeList?.tasks?.length && <h2>No tasks</h2>}
 				{activeList?.tasks &&
 					activeList?.tasks?.map((task, index) => (
-						<>
-							<Task
-								key={uuidv4()}
-								list={activeList}
-								onEdit={onEditTask}
-								onRemove={onRemoveTask}
-								onComplete={onCompleteTask}
-								{...task}
-							/>
-						</>
+						<Task
+							key={uuidv4()}
+							list={activeList}
+							onEdit={onEditTask}
+							onRemove={onRemoveTask}
+							onComplete={onCompleteTask}
+							{...task}
+						/>
 					))}
 				<AddTaskForm key={uuidv4()} id={id ? id : list.id} list={list} onAddTask={onAddTask} />
 			</div>

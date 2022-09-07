@@ -13,15 +13,14 @@ export default function AddTaskForm({ list, onAddTask, id }) {
 	};
 
 	const addTask = () => {
-		console.log(id);
 		const obj = {
-			listId: Number(id),
 			text: inputValue,
+			listId: Number(id),
 			completed: false,
 		};
 		setIsLoading(true);
 		axios
-			.post("https://63184367f6b281877c6769bb.mockapi.io/tasks", obj)
+			.post("https://63188bbdf6b281877c6f7f12.mockapi.io/tasks", obj)
 			.then(({ data }) => {
 				onAddTask(id, data);
 				toggleFormVisible();
