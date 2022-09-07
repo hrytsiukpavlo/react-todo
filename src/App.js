@@ -4,6 +4,7 @@ import { AddList, Tasks } from "./components";
 import axios from "axios";
 import { Route, Routes } from "react-router-dom";
 import ListLink from "./components/List/ListLink";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
 	const [lists, setLists] = useState([]);
@@ -12,28 +13,46 @@ function App() {
 	useEffect(() => {
 		const allRequests = Promise.all([
 			axios
-				.get("https://6317872182797be77fff8e46.mockapi.io/lists?_expand=color&_embed=tasks")
+				.get("https://63184367f6b281877c6769bb.mockapi.io/lists?_expand=color&_embed=tasks")
 				.then(({ data }) => {
 					return data;
 				}),
-			axios.get("https://6317872182797be77fff8e46.mockapi.io/colors/").then(({ data }) => {
+			axios.get("https://63184367f6b281877c6769bb.mockapi.io/colors/").then(({ data }) => {
 				return data;
 			}),
-			//get tasks
+			axios.get("https://63184367f6b281877c6769bb.mockapi.io/tasks/").then(({ data }) => {
+				return data;
+			}),
 		]);
 
 		allRequests.then((data) => {
 			const fetchedLists = data[0];
 			const fetchedColors = data[1];
-			//data[2]
+			const fetchedTasks = data[2];
 			const newLists = fetchedLists.map((list) => {
 				const targetColor = list.colorId;
+				const targetTasks = list.id;
 				// add tasks to the list by list.id === listId (ne poteryat type)
-				return { ...list, colorId: fetchedColors.find((color) => color.id === targetColor)?.hex };
+				// console.log(list);
+				// console.log(
+				// 	fetchedTasks
+				// 		.filter((task) => Number(task.listId) === Number(targetTasks))
+				// 		.map((task) => task.text)
+				// );
+				return {
+					...list,
+					colorId: fetchedColors.find((color) => color.id === targetColor)?.hex,
+					tasks: fetchedTasks
+						.filter((task) => Number(task.listId) === Number(targetTasks))
+						.map((task) => ({
+							text: task.text,
+							taskId: Number(task.id),
+						})),
+				};
 			});
 			setLists(newLists);
 			setColors(fetchedColors);
-			//get tasks
+			console.log(newLists);
 		});
 	}, []);
 
@@ -61,7 +80,7 @@ function App() {
 				return item;
 			});
 			setLists(newList);
-			axios.delete("https://6317872182797be77fff8e46.mockapi.io/tasks/" + taskId).catch(() => {
+			axios.delete("https://63184367f6b281877c6769bb.mockapi.io/tasks/" + taskId).catch(() => {
 				alert("Unable to delete task");
 			});
 		}
@@ -87,7 +106,7 @@ function App() {
 		});
 		setLists(newList);
 		axios
-			.put("https://6317872182797be77fff8e46.mockapi.io/tasks/" + taskObj.id, {
+			.put("https://63184367f6b281877c6769bb.mockapi.io/tasks/" + taskObj.id, {
 				text: newTaskText,
 			})
 			.catch(() => {
@@ -109,7 +128,7 @@ function App() {
 		});
 		setLists(newList);
 		axios
-			.put("https://6317872182797be77fff8e46.mockapi.io/tasks/" + taskId, {
+			.put("https://63184367f6b281877c6769bb.mockapi.io/tasks/" + taskId, {
 				completed,
 			})
 			.catch(() => {
@@ -138,12 +157,11 @@ function App() {
 					</ListLink>
 					{lists
 						? lists.map((list, index) => {
-								// console.log(list.colorId);
 								return (
 									<ListLink
 										to={`/lists/${list.id}`}
 										id={list.id}
-										key={list.id}
+										key={uuidv4()}
 										color={list.colorId}
 										isRemovable={true}
 										onRemoveList={() => {
@@ -164,18 +182,20 @@ function App() {
 						<Route
 							exact
 							path="/"
-							element={lists.map((list) => {
+							element={lists.map((list, index) => {
 								return (
-									<Tasks
-										key={list.id}
-										list={list}
-										onAddTask={onAddTask}
-										onEditTitle={onEditListTitle}
-										onRemoveTask={onRemoveTask}
-										onEditTask={onEditTask}
-										onCompleteTask={onCompleteTask}
-										withoutEmpty
-									/>
+									<>
+										<Tasks
+											key={uuidv4()}
+											list={list}
+											onAddTask={onAddTask}
+											onEditTitle={onEditListTitle}
+											onRemoveTask={onRemoveTask}
+											onEditTask={onEditTask}
+											onCompleteTask={onCompleteTask}
+											withoutEmpty
+										/>
+									</>
 								);
 							})}
 						/>
@@ -183,14 +203,16 @@ function App() {
 							path="/lists/:id"
 							element={
 								lists && (
-									<Tasks
-										lists={lists}
-										onAddTask={onAddTask}
-										onEditTitle={onEditListTitle}
-										onRemoveTask={onRemoveTask}
-										onEditTask={onEditTask}
-										onCompleteTask={onCompleteTask}
-									/>
+									<>
+										<Tasks
+											lists={lists}
+											onAddTask={onAddTask}
+											onEditTitle={onEditListTitle}
+											onRemoveTask={onRemoveTask}
+											onEditTask={onEditTask}
+											onCompleteTask={onCompleteTask}
+										/>
+									</>
 								)
 							}
 						/>

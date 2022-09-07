@@ -8,6 +8,7 @@ import "./Tasks.scss";
 
 import AddTaskForm from "./AddTaskForm";
 import Task from "./Task";
+import { v4 as uuidv4 } from "uuid";
 
 const Tasks = ({
 	lists,
@@ -35,7 +36,7 @@ const Tasks = ({
 			onEditTitle(activeList.id, newTitle);
 			console.log(activeList.id);
 			axios
-				.put("https://6317872182797be77fff8e46.mockapi.io/lists/" + activeList.id, {
+				.put("https://63184367f6b281877c6769bb.mockapi.io/lists/" + activeList.id, {
 					name: newTitle,
 				})
 				.catch(() => {
@@ -53,24 +54,21 @@ const Tasks = ({
 				</h2>
 			</Link>
 			<div className="tasks__items">
-				{!withoutEmpty && activeList?.tasks && !activeList?.tasks.length && <h2>No tasks</h2>}
+				{!withoutEmpty && activeList?.tasks && !activeList?.tasks?.length && <h2>No tasks</h2>}
 				{activeList?.tasks &&
-					activeList?.tasks.map((task) => (
-						<Task
-							key={task.id}
-							list={activeList}
-							onEdit={onEditTask}
-							onRemove={onRemoveTask}
-							onComplete={onCompleteTask}
-							{...task}
-						/>
+					activeList?.tasks?.map((task, index) => (
+						<>
+							<Task
+								key={uuidv4()}
+								list={activeList}
+								onEdit={onEditTask}
+								onRemove={onRemoveTask}
+								onComplete={onCompleteTask}
+								{...task}
+							/>
+						</>
 					))}
-				<AddTaskForm
-					key={id ? id : list.id}
-					id={id ? id : list.id}
-					list={list}
-					onAddTask={onAddTask}
-				/>
+				<AddTaskForm key={uuidv4()} id={id ? id : list.id} list={list} onAddTask={onAddTask} />
 			</div>
 		</div>
 	);

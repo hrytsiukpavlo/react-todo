@@ -35,7 +35,7 @@ const AddList = ({ colors, onAdd }) => {
 			colorId: selectedColor,
 		});
 		axios
-			.post("https://6317872182797be77fff8e46.mockapi.io/lists", {
+			.post("https://63184367f6b281877c6769bb.mockapi.io/lists", {
 				name: inputValue,
 				colorId: selectedColor,
 			})

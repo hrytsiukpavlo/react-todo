@@ -3,6 +3,7 @@ import "./List.scss";
 import classNames from "classnames";
 import removeSvg from "../../assets/img/remove.svg";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 import Badge from "../Badge";
 
@@ -10,7 +11,7 @@ const List = ({ items, isRemovable, onClick, onRemove, onClickItem, activeItem }
 	const removeList = (item) => {
 		if (window.confirm("Are you sure that you want to delete this list?")) {
 			onRemove(item);
-			axios.delete("https://6317872182797be77fff8e46.mockapi.io/lists/" + item.id).then(() => {
+			axios.delete("https://63184367f6b281877c6769bb.mockapi.io/lists/" + item.id).then(() => {
 				onRemove(item.id);
 			});
 		}
@@ -20,7 +21,7 @@ const List = ({ items, isRemovable, onClick, onRemove, onClickItem, activeItem }
 		<ul onClick={onClick} className="list">
 			{items.map((item, index) => (
 				<li
-					key={index}
+					key={uuidv4()}
 					className={classNames(item.className, {
 						active: item.active ? item.active : activeItem && activeItem.id === item.id,
 					})}

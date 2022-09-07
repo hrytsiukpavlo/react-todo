@@ -21,7 +21,7 @@ export default function AddTaskForm({ list, onAddTask, id }) {
 		};
 		setIsLoading(true);
 		axios
-			.post("https://6317872182797be77fff8e46.mockapi.io/tasks", obj)
+			.post("https://63184367f6b281877c6769bb.mockapi.io/tasks", obj)
 			.then(({ data }) => {
 				onAddTask(id, data);
 				toggleFormVisible();

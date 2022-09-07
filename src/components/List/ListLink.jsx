@@ -11,7 +11,7 @@ const ListLink = ({ to, children, color, isRemovable, onRemoveList, id }) => {
 
 	const removeList = () => {
 		if (window.confirm("Are you sure that you want to delete this list?")) {
-			axios.delete("https://6317872182797be77fff8e46.mockapi.io/lists/" + id).then(() => {
+			axios.delete("https://63184367f6b281877c6769bb.mockapi.io/lists/" + id).then(() => {
 				onRemoveList(id);
 				navigate("/");
 			});
