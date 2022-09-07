@@ -186,7 +186,7 @@ function App() {
 					<Routes>
 						<Route
 							exact
-							path="/"
+							path="/react-todo"
 							element={lists.map((list, index) => {
 								return (
 									<Tasks

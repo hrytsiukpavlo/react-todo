@@ -2,6 +2,7 @@
 	"name": "todo-app",
 	"version": "0.1.0",
 	"private": true,
+	"homepage": "https://hrytsiukpavlo.github.io/react-todo",
 	"dependencies": {
 		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/react": "^13.3.0",
@@ -21,7 +22,9 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"fake-json": "json-server ./src/assets/db.json --watch --port 3001"
+		"fake-json": "json-server ./src/assets/db.json --watch --port 3001",
+		"predeploy": "npm run build",
+		"deploy": "gh-pages -d build"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -42,6 +45,7 @@
 		]
 	},
 	"devDependencies": {
+		"gh-pages": "^4.0.0",
 		"json-server": "^0.17.0",
 		"prettier": "^2.7.1"
 	}

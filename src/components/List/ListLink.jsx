@@ -20,7 +20,7 @@ const ListLink = ({ to, children, color, isRemovable, onRemoveList, id }) => {
 	return (
 		<div>
 			<NavLink
-				to={to ? to : "/"}
+				to={to ? to : "/react-todo"}
 				className={({ isActive }) => cn("link", isActive && "active")}
 				end
 			>
